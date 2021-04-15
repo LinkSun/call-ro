@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .cor {
+            background-color: #6083cd;
+        }
+
+        #box {
+            width: 500px;
+            border: 2px solid black;
+            margin: 0 auto;
+            height: 500px;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        li {
+            width: 50px;
+            height: 50px;
+            margin: 20px;
+            float: left;
+            line-height: 50px;
+            text-align: center;
+        }
+
+        .center {
+            width: 156px;
+            height: 40px;
+            line-height: 40px;
+            margin: 0 auto;
+        }
+
+        #pp {
+            display: block;
+            text-align: center;
+            margin-top: 40px;
+            font-size: 35px;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div id="box">
+        <h1 style="text-align:center">点名系统</h1>
+        <div class="center">
+            <input type="button" value="开始点名" id="btn">
+            <input type="button" value="停止点名" id="btn2">
+        </div>
+        <span id="pp"></span>
+        <div id="dv">
+        </div>
+    </div>
+</body>
+
+</html>
+<script>
+    function my$(id) {
+        return document.getElementById(id);
+    }
+
+
+    //定义数组，存放数值
+    var arr = ["卓子贤", "梁图", "袁绍思", "张家磊", "梁文龙", "方志豪", "曾勇强", "陈文"];
+
+    //先创建一个ul加入到名字为dv的div中
+    var oul = document.createElement("ul");
+    my$("dv").appendChild(oul);
+    //接下来遍历arr数组，动态创建li元素并且加入到ul中，并且把数组变量动态写到li中
+    for (var i = 0; i < arr.length; i++) {
+        oli = document.createElement("li");
+        oul.appendChild(oli);
+        oli.innerHTML = arr[i];
+    }
+
+    //先获取到所有的li，为下面的应用css样式做铺垫
+    var oli = oul.getElementsByTagName("li");
+
+    var timer; //这里先定义一个变量，开启定时器再赋值，
+    //为鼠标注册点击事件
+    my$("btn").onclick = function () {
+        clearInterval(timer); //在开启定时器之前先清除定时器，避免出现用户多次点击开启多个定时器而关不掉。
+        //开启定时器并赋值给变量
+        timer = setInterval(function () {
+            var num = parseInt(Math.random() * arr.length);
+            console.log(num);
+            //这里遍历所有的li元素，在开启定时器之前先把所有的li的样式清除掉
+            //如果这里不清除，那么所有的li在下一步都会全部应用上css样式，
+            //全部都会高亮显示,无法实现排他效果
+            for (var i = 0; i < oli.length; i++) {
+                oli[i].className = "";
+            }
+            oli[num].className = "cor";
+            //将生成的随机数动态显示到span中，将最后所选择的数组名显示到span中
+            my$("pp").innerHTML = arr[num];
+            //console.log(arr[num]);
+        }, 100);
+    }
+    //停止点名按钮。
+    my$("btn2").onclick = function () {
+        clearInterval(timer);
+    }
+</script>
